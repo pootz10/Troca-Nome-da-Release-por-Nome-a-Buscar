@@ -4,13 +4,16 @@
 // @description Transforma o nome de uma release por exemplo: Filme.2020.HDRip.XviD.AC3-EVO em Filme pra busca identificar
 // @include     http://*legendas.tv/*
 // @exclude     http://*legendas.tv/download/*
-// @version     1.1
+// @version     1.2
+// @history     1.2 - salva status da checkbox
 // @history     1.1 - adicionado botão toggle pra desligar a função
 // @license     GNU
 // @require     https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js
 // @updateURL   https://github.com/pootz10/Troca-Nome-da-Release-por-Nome-a-Buscar/raw/master/Troca_Nome_da_Release_por_Nome_a_Buscar.user.js
 // @downloadURL https://github.com/pootz10/Troca-Nome-da-Release-por-Nome-a-Buscar/raw/master/Troca_Nome_da_Release_por_Nome_a_Buscar.user.js
 // @grant       GM_addStyle
+// @grant       GM_getValue
+// @grant       GM_setValue
 // @run-at      document-idle
 // ==/UserScript==
 
@@ -25,7 +28,11 @@ search.before('<label class="switch" title="Extrai Apenas o Nome.Da.Release" sty
 
 
 var conversor = $('#conversor');
-conversor.prop("checked", true);
+if ( GM_getValue('trocaNomeScript') == "undefined" )
+    conversor.prop("checked", true);
+else
+    conversor.prop("checked", GM_getValue('trocaNomeScript') )
+
 
 if( conversor.is(":checked") ) {
     search.bind('paste', function (e){
@@ -42,12 +49,14 @@ conversor.on("click", function (){
 conversor.on("change", function() {
 
    if( $(this).is(":checked") ) {
+       GM_setValue(('trocaNomeScript'), true);
        search.bind('paste', function (e){
             $(e.target).keyup(sohTitulo);
         });
    }
     else {
        search.unbind('paste');
+       GM_setValue(('trocaNomeScript'), false);
    }
 
 });
