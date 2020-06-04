@@ -28,9 +28,12 @@ search.before('<label class="switch" title="Extrai Apenas o Nome.Da.Release" sty
 
 
 var conversor = $('#conversor');
-if ( GM_getValue('trocaNomeScript') == "undefined" )
+if ( GM_getValue('trocaNomeScript') === undefined ){
+    console.log(GM_getValue('trocaNomeScript'));
+    GM_setValue(('trocaNomeScript'), true);
     conversor.prop("checked", true);
-else
+    console.log(GM_getValue('trocaNomeScript'));
+} else
     conversor.prop("checked", GM_getValue('trocaNomeScript') )
 
 
